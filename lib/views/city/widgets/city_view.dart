@@ -9,6 +9,7 @@ import '../../../models/activity.model.dart';
 
 class CityView extends StatefulWidget {
   final List<Activity> activities = data.activities;
+  static const String routeName = '/city';
 
   CityView({super.key});
 
