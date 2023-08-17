@@ -1,3 +1,4 @@
+import 'package:cities/models/city_model.dart';
 import 'package:cities/models/trip.model.dart';
 import 'package:cities/views/city/widgets/activity_list.dart';
 import 'package:cities/views/city/widgets/trip_activity_list.dart';
@@ -6,16 +7,31 @@ import 'package:flutter/material.dart';
 import '../../../data/data.dart' as data;
 import '../../../models/activity.model.dart';
 
-class City extends StatefulWidget {
+class CityView extends StatefulWidget {
   final List<Activity> activities = data.activities;
 
-  City({super.key});
+  CityView({super.key});
+
+  showContext({required BuildContext context, required List<Widget> children}) {
+    final orientation = MediaQuery.of(context).orientation;
+
+    if (orientation == Orientation.landscape) {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: children,
+      );
+    } else {
+      return Column(
+        children: children,
+      );
+    }
+  }
 
   @override
-  State<City> createState() => _CityState();
+  State<CityView> createState() => _CityViewState();
 }
 
-class _CityState extends State<City> {
+class _CityViewState extends State<CityView> {
   late int index;
   late Tryp myTryp;
 
@@ -73,17 +89,21 @@ class _CityState extends State<City> {
 
   @override
   Widget build(BuildContext context) {
+    final City city = ModalRoute.of(context)!.settings.arguments as City;
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(Icons.chevron_left),
+        //  leading: const Icon(Icons.chevron_left),
         title: const Text('Organisation du voyage'),
         actions: const <Widget>[Icon(Icons.more_vert)],
       ),
-      body: Column(
+      body: Container(
+          child: widget.showContext(
+        context: context,
         children: [
           TripOverview(
             setDate: setDate,
             myTryp: myTryp,
+            cityName: city.name,
           ),
           Expanded(
             child: index == 0
@@ -98,7 +118,7 @@ class _CityState extends State<City> {
                   ),
           ),
         ],
-      ),
+      )),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: const Color.fromARGB(255, 18, 3, 61),
         unselectedItemColor: const Color.fromARGB(255, 225, 229, 238),

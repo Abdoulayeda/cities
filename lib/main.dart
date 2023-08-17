@@ -1,4 +1,5 @@
-import 'package:cities/views/city/widgets/city.dart';
+import 'package:cities/views/city/widgets/city_view.dart';
+import 'package:cities/views/home/home_view.dart';
 import 'package:flutter/material.dart';
 //import 'views/home/home.dart';
 
@@ -12,8 +13,11 @@ class DymaTrip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: City(),
-    );
+        debugShowCheckedModeBanner: false,
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const HomeView(),
+          '/city': (context) => CityView(),
+        });
   }
 }
